@@ -3,6 +3,15 @@ description: "This package contains a set  of useful extension methods for commo
 version: 0.0.1
 homepage: https://github.com/Saw2110/extension_service.git
 
+plugin: 
+  platforms:
+    android:
+    ios:
+    linux:
+    macos:
+    web:
+    windows:
+
 environment:
   sdk: '>=3.2.3 <4.0.0'
   flutter: ">=1.17.0"
@@ -19,3 +28,4 @@ dev_dependencies:
 
 
 flutter:
+
