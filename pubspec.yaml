@@ -1,6 +1,6 @@
 name: extension_service
 description: "This package contains a set  of useful extension methods for common types in Flutter Dart. These extensions enhance the functionality of standard classes, providing convenient methods for everyday tasks."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/Saw2110/extension_service.git
 
 plugin: 
