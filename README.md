@@ -14,7 +14,6 @@ This repository contains a set of useful extension methods for common types in F
 - [Map Extensions](#map-extensions)
 - [Num Extensions](#num-extensions)
 - [String Extensions](#string-extensions)
-- [Contributions](#🚀 welcome-contributions! 🎉)
 
 ## Introduction
 
