@@ -1,3 +1,6 @@
+import '../extension_service.dart';
+
+
 extension DateTimeExtensions on DateTime {
   // 1. Check if the date is today
   bool get isToday => isSameDay(DateTime.now());
@@ -29,8 +32,23 @@ extension DateTimeExtensions on DateTime {
   String get shortDateString => '$month/$day/$year';
 
   // 8. Format the date as a long date string (MMMM dd, yyyy)
-  String get longDateString =>
-      '${month == 1 ? 'January' : month == 2 ? 'February' : month == 3 ? 'March' : month == 4 ? 'April' : month == 5 ? 'May' : month == 6 ? 'June' : month == 7 ? 'July' : month == 8 ? 'August' : month == 9 ? 'September' : month == 10 ? 'October' : month == 11 ? 'November' : 'December'} $day, $year';
+  String get longDateString {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    return '${months[month - 1]} $day, $year';
+  }
 
   // 9. Format the time as a 12-hour clock string (hh:mm a)
   String get twelveHourTimeString =>
@@ -71,15 +89,31 @@ extension DateTimeExtensions on DateTime {
   DateTime subtractDays(int days) => subtract(Duration(days: days));
 
   // 21. Add a specified number of months to the date
-  DateTime addMonths(int months) => DateTime(year, month + months, day, hour,
-      minute, second, millisecond, microsecond);
+  DateTime addMonths(int months) => DateTime(
+        year,
+        month + months,
+        day,
+        hour,
+        minute,
+        second,
+        millisecond,
+        microsecond,
+      );
 
   // 22. Subtract a specified number of months from the date
   DateTime subtractMonths(int months) => addMonths(-months);
 
   // 23. Add a specified number of years to the date
   DateTime addYears(int years) => DateTime(
-      year + years, month, day, hour, minute, second, millisecond, microsecond);
+        year + years,
+        month,
+        day,
+        hour,
+        minute,
+        second,
+        millisecond,
+        microsecond,
+      );
 
   // 24. Subtract a specified number of years from the date
   DateTime subtractYears(int years) => addYears(-years);
@@ -109,8 +143,93 @@ extension DateTimeExtensions on DateTime {
   bool isSameYear(DateTime other) => year == other.year;
 
   // 31.
-  int get hourOf12HourClock {
-    final hour = this.hour % 12;
-    return hour == 0 ? 12 : hour;
+  int get hourOf12HourClock => hour % 12 == 0 ? 12 : hour % 12;
+
+  // 32. Check if date is weekend
+  bool isWeekend(FormatBy type) => type == FormatBy.EN
+      ? (weekday == DateTime.saturday || weekday == DateTime.sunday)
+      : (weekday == DateTime.saturday);
+
+  // 33. Check if date is weekday
+  bool isWeekday(FormatBy type) => !isWeekend(type);
+
+  // 34. Get quarter of year (1-4)
+  int get quarter => ((month - 1) ~/ 3) + 1;
+
+  // 35. Check if year is leap year
+  bool get isLeapYear => year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+
+  // 36. Get week number in year
+  int get weekNumber {
+    final firstDayOfYear = DateTime(year);
+    final daysOffset = firstDayOfYear.weekday - 1;
+    final firstWeekDay = firstDayOfYear.subtract(Duration(days: daysOffset));
+    final inDays = difference(firstWeekDay).inDays;
+    return (inDays / 7).ceil();
   }
+
+  // 37. Format date with custom pattern
+  String format(String pattern) {
+    return pattern
+        .replaceAll('yyyy', year.toString())
+        .replaceAll('MM', month.toString().padLeft(2, '0'))
+        .replaceAll('dd', day.toString().padLeft(2, '0'))
+        .replaceAll('HH', hour.toString().padLeft(2, '0'))
+        .replaceAll('mm', minute.toString().padLeft(2, '0'))
+        .replaceAll('ss', second.toString().padLeft(2, '0'));
+  }
+
+  // 38. Get relative time string
+  String get relativeTime {
+    final now = DateTime.now();
+    final difference = now.difference(this);
+
+    if (difference.inDays > 365) {
+      return '${(difference.inDays / 365).floor()} years ago';
+    } else if (difference.inDays > 30) {
+      return '${(difference.inDays / 30).floor()} months ago';
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} hours ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minutes ago';
+    } else {
+      return 'just now';
+    }
+  }
+
+  // 39. Get days in month
+  int get daysInMonth {
+    return DateTime(year, month + 1, 0).day;
+  }
+
+  // 40. Get remaining days in month
+  int get remainingDaysInMonth => daysInMonth - day;
+
+  // 41. Check if date is between two other dates
+  bool isBetween(DateTime start, DateTime end) =>
+      isAfter(start) && isBefore(end);
+
+  // 42. Get age from birthdate
+  int get getAge {
+    final now = DateTime.now();
+    int age = now.year - year;
+    if (now.month < month || (now.month == month && now.day < day)) {
+      age--;
+    }
+    return age;
+  }
+
+  // 43. Convert to UTC
+  DateTime toUtc() => DateTime.utc(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        second,
+        millisecond,
+        microsecond,
+      );
 }

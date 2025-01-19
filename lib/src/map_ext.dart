@@ -15,15 +15,7 @@ extension MapExtensions<Key, Value> on Map<Key, Value> {
 
   // 5. Remove entries from the map based on a condition
   void removeWhere(bool Function(Key key, Value value) condition) {
-    final keysToRemove = <Key>[];
-    forEach((key, value) {
-      if (condition(key, value)) {
-        keysToRemove.add(key);
-      }
-    });
-    for (var key in keysToRemove) {
-      remove(key);
-    }
+    this.removeWhere((key, value) => condition(key, value));
   }
 
   // 6. Filter entries in the map based on a condition
@@ -39,7 +31,8 @@ extension MapExtensions<Key, Value> on Map<Key, Value> {
 
   // 7. Merge two maps
   Map<Key, Value> merge(Map<Key, Value> other) {
-    final result = {...this, ...other};
+    final result = Map<Key, Value>.from(this);
+    result.addAll(other);
     return result;
   }
 
@@ -66,5 +59,19 @@ extension MapExtensions<Key, Value> on Map<Key, Value> {
   // 10. Convert the map to a JSON string
   String toJsonString() {
     return json.encode(this);
+  }
+
+  // 11. Add a new entry if the key does not exist in the map
+  void addIfAbsent(Key key, Value value) {
+    if (!containsKey(key)) {
+      this[key] = value;
+    }
+  }
+
+  // 12. Update the value for a given key if the key exists
+  void updateValue(Key key, Value value) {
+    if (containsKey(key)) {
+      this[key] = value;
+    }
   }
 }

@@ -1,4 +1,38 @@
 include: package:flutter_lints/flutter.yaml
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+linter:
+  rules:
+    - require_trailing_commas
+    - prefer_relative_imports
+    - directives_ordering
+    - eol_at_end_of_file
+    - no_literal_bool_comparisons
+    - unnecessary_to_list_in_spreads
+    - unnecessary_null_aware_operator_on_extension_on_nullable
+    - combinators_ordering
+    - sort_child_properties_last
+    - invalid_case_patterns
+    - unnecessary_breaks
+    - cancel_subscriptions
+    - close_sinks
+    - avoid_redundant_argument_values
+    - use_decorated_box
+    - use_colored_box
+    - prefer_final_locals
+    - prefer_const_declarations
+    - prefer_const_constructors_in_immutables
+    - prefer_generic_function_type_aliases
+    - join_return_with_assignment
+    - constant_identifier_names
+
+
+analyzer:
+  exclude:
+    - "build/**"
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  errors:
+    invalid_annotation_target: ignore
+    constant_identifier_names: ignore
+
+

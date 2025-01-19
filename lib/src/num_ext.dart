@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:intl/intl.dart';
+import '../extension_service.dart';
 
 extension NumExtensions on num {
   // 1. Convert the number to a percentage string
@@ -40,10 +40,14 @@ extension NumExtensions on num {
   String toCurrencyString({
     String currencySymbol = '\$',
     int fractionDigits = 2,
+    FormatBy formatType = FormatBy.EN,
   }) {
-    final format = NumberFormat.currency(
-        symbol: currencySymbol, decimalDigits: fractionDigits);
-    return format.format(this);
+    return CurrencyHelper.formatNumberToAmount(
+      currencySymbol: currencySymbol,
+      number: double.parse(toString()),
+      formatType: formatType,
+      fractionDigits: fractionDigits,
+    );
   }
 
   // 12. Check if the number is a prime number
@@ -155,12 +159,28 @@ extension NumExtensions on num {
       return '0x${(this as int).toRadixString(2)}';
     } else {
       throw UnsupportedError(
-          "toHexString is only supported for int or BigInt.");
+        "toHexString is only supported for int or BigInt.",
+      );
     }
   }
 
   // 23. Convert the number to a string with commas for thousands separator
-  String withCommas() => NumberFormat('#,##0').format(this);
+  @Deprecated(
+    'dont use as the same task is done by .toCurrencyString()',
+  )
+  // String withCommas() => NumberFormat('#,##0').format(this);
+  String withCommas({
+    String currencySymbol = '\$',
+    int fractionDigits = 2,
+    FormatBy formatType = FormatBy.EN,
+  }) {
+    return CurrencyHelper.formatNumberToAmount(
+      currencySymbol: currencySymbol,
+      number: double.parse(toString()),
+      formatType: formatType,
+      fractionDigits: fractionDigits,
+    );
+  }
 
   // 24. Calculate the average of the number and another number
   num average(num other) => (this + other) / 2;

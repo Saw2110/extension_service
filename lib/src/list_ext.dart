@@ -138,4 +138,62 @@ extension ListExtensions<T> on List<T> {
   // 30. Skip elements from the beginning of the list while a condition is satisfied
   List<T> skipWhileCondition(bool Function(T) condition) =>
       skipWhile(condition).toList();
+
+  // 31. Group elements by key
+  Map<K, List<T>> groupBy<K>(K Function(T) keySelector) {
+    return fold<Map<K, List<T>>>(
+      {},
+      (map, element) {
+        final key = keySelector(element);
+        (map[key] ??= []).add(element);
+        return map;
+      },
+    );
+  }
+
+  // 32. Partition list into two lists based on condition
+  (List<T>, List<T>) partition(bool Function(T) predicate) {
+    final truelist = <T>[];
+    final falselist = <T>[];
+    for (final element in this) {
+      if (predicate(element)) {
+        truelist.add(element);
+      } else {
+        falselist.add(element);
+      }
+    }
+    return (truelist, falselist);
+  }
+
+  // 33. Find duplicates in the list
+  List<T> get duplicates {
+    final seen = <T>{};
+    final duplicates = <T>{};
+    for (final item in this) {
+      if (!seen.add(item)) {
+        duplicates.add(item);
+      }
+    }
+    return duplicates.toList();
+  }
+
+  // 34. Split list when condition is met
+  List<List<T>> splitWhen(bool Function(T) condition) {
+    final result = <List<T>>[];
+    var currentChunk = <T>[];
+
+    for (final item in this) {
+      if (condition(item) && currentChunk.isNotEmpty) {
+        result.add(List.of(currentChunk));
+        currentChunk = <T>[];
+      }
+      currentChunk.add(item);
+    }
+
+    if (currentChunk.isNotEmpty) {
+      result.add(currentChunk);
+    }
+
+    return result;
+  }
 }
