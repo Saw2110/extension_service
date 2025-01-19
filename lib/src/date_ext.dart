@@ -1,6 +1,5 @@
 import '../extension_service.dart';
 
-
 extension DateTimeExtensions on DateTime {
   // 1. Check if the date is today
   bool get isToday => isSameDay(DateTime.now());
