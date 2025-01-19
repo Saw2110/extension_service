@@ -165,22 +165,22 @@ extension NumExtensions on num {
   }
 
   // 23. Convert the number to a string with commas for thousands separator
-  @Deprecated(
-    'dont use as the same task is done by .toCurrencyString()',
-  )
-  // String withCommas() => NumberFormat('#,##0').format(this);
-  String withCommas({
-    String currencySymbol = '\$',
-    int fractionDigits = 2,
-    FormatBy formatType = FormatBy.EN,
-  }) {
-    return CurrencyHelper.formatNumberToAmount(
-      currencySymbol: currencySymbol,
-      number: double.parse(toString()),
-      formatType: formatType,
-      fractionDigits: fractionDigits,
-    );
-  }
+  // @Deprecated(
+  //   'dont use as the same task is done by .toCurrencyString()',
+  // )
+  // // String withCommas() => NumberFormat('#,##0').format(this);
+  // String withCommas({
+  //   String currencySymbol = '\$',
+  //   int fractionDigits = 2,
+  //   FormatBy formatType = FormatBy.EN,
+  // }) {
+  //   return CurrencyHelper.formatNumberToAmount(
+  //     currencySymbol: currencySymbol,
+  //     number: double.parse(toString()),
+  //     formatType: formatType,
+  //     fractionDigits: fractionDigits,
+  //   );
+  // }
 
   // 24. Calculate the average of the number and another number
   num average(num other) => (this + other) / 2;
